@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اطلب من قفطان — KFT</title>
+<meta name="description" content="مجمع قفطان — النجف. اختار القطعة واللون والقياس، والطلب يوصلنا على الواتساب. التوصيل 5 آلاف لكل المحافظات.">
+<meta name="theme-color" content="#01261f">
+<meta property="og:title" content="اطلب من مجمع قفطان — KFT">
+<meta property="og:description" content="اختار القطعة واللون والقياس، والتوصيل لكل محافظات العراق بـ 5 آلاف">
+<meta property="og:image" content="https://hassan973397.github.io/kft-order/logo.jpg">
+<link rel="icon" href="logo.jpg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#01261f; --bg2:#06352b; --card:#0a3d32; --line:#1d5a4b;
+  --gold:#e5b54a; --gold2:#f4d27e; --ink:#f3efe3; --muted:#a9c1b8;
+  --ok:#25d366; --err:#ff8a7a; --r:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg) radial-gradient(120% 60% at 50% 0%,#0b4636 0%,var(--bg) 60%) no-repeat;color:var(--ink);font-family:Cairo,system-ui,sans-serif;line-height:1.6;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:560px;margin:0 auto;padding:20px 16px 120px}
+header{text-align:center;padding:8px 0 18px}
+header img{width:92px;height:92px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 6px 24px #0007}
+h1{margin:10px 0 2px;font-size:24px;font-weight:800}
+h1 span{color:var(--gold)}
+.sub{color:var(--muted);font-size:14px;margin:0}
+.badges{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.badge{border:1px solid var(--line);background:var(--bg2);border-radius:99px;padding:4px 12px;font-size:13px}
+.badge b{color:var(--gold)}
+section{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:14px 0}
+section h2{margin:0 0 12px;font-size:17px;display:flex;gap:8px;align-items:center}
+.n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#1b1404;font-size:14px;font-weight:800}
+.products{display:grid;gap:10px}
+.prod{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg2);cursor:pointer;text-align:right;color:inherit;font:inherit;width:100%}
+.prod[aria-pressed=true]{border-color:var(--gold);box-shadow:0 0 0 3px #e5b54a33}
+.prod .t{font-weight:700}
+.prod .d{color:var(--muted);font-size:13px}
+.prod .p{color:var(--gold);font-weight:800;white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:99px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.chip[aria-pressed=true]{border-color:var(--gold);background:#e5b54a22;color:var(--gold2);font-weight:700}
+label{display:block;font-size:14px;margin:12px 0 6px;color:var(--muted)}
+input,select,textarea{width:100%;background:var(--bg);border:1.5px solid var(--line);border-radius:12px;color:var(--ink);font:inherit;font-size:16px;padding:11px 12px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{min-height:70px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qty{display:flex;align-items:center;gap:10px}
+.qty button{width:42px;height:42px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg2);color:var(--ink);font-size:22px;cursor:pointer}
+.qty output{min-width:28px;text-align:center;font-size:20px;font-weight:800}
+.hint{font-size:13px;color:var(--muted);margin:6px 0 0}
+.err{color:var(--err);font-size:13px;margin:6px 0 0;min-height:0}
+.toggle{background:none;border:none;color:var(--gold2);font:inherit;font-size:14px;padding:6px 0;cursor:pointer;text-decoration:underline}
+.hidden{display:none!important}
+.bar{position:fixed;inset:auto 0 0 0;background:#01261ff2;backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.bar .in{max-width:560px;margin:0 auto;display:flex;gap:12px;align-items:center}
+.sum{flex:1;font-size:13px;color:var(--muted)}
+.sum b{display:block;color:var(--ink);font-size:18px}
+.send{background:var(--ok);color:#06210f;border:none;border-radius:14px;padding:13px 18px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;white-space:nowrap}
+.send:active{transform:scale(.98)}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:24px}
+footer a{color:var(--gold2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="logo.jpg" alt="شعار KFT" width="92" height="92">
+    <h1>اطلب من <span>مجمع قفطان</span></h1>
+    <p class="sub">النجف — خان المخضر · جملة ومفرد</p>
+    <div class="badges">
+      <span class="badge">🚚 التوصيل <b>5 آلاف</b> لكل المحافظات</span>
+      <span class="badge">✅ تفحص الطلب گدام المندوب</span>
+    </div>
+  </header>
+
+  <form id="f" novalidate>
+    <section>
+      <h2><span class="n">1</span> اختار القطعة</h2>
+      <div class="products" id="products"></div>
+      <p class="err" id="e-product"></p>
+    </section>
+
+    <section id="s-opts" class="hidden">
+      <h2><span class="n">2</span> اللون والقياس</h2>
+      <label>اللون</label>
+      <div class="chips" id="colours"></div>
+      <p class="err" id="e-colour"></p>
+
+      <label>القياس</label>
+      <div class="chips" id="sizes"></div>
+      <button type="button" class="toggle" id="dontknow">ما أعرف قياسي — أكتب الوزن والطول</button>
+      <div id="wh" class="row hidden">
+        <div><label for="weight">الوزن (كيلو)</label><input id="weight" inputmode="numeric" placeholder="مثلاً 80"></div>
+        <div><label for="height">الطول (سم)</label><input id="height" inputmode="numeric" placeholder="مثلاً 175"></div>
+      </div>
+      <p class="hint" id="sizehint"></p>
+      <p class="err" id="e-size"></p>
+
+      <label>العدد</label>
+      <div class="qty">
+        <button type="button" id="minus" aria-label="نقص">−</button>
+        <output id="qty">1</output>
+        <button type="button" id="plus" aria-label="زيد">+</button>
+      </div>
+      <p class="hint" id="offer"></p>
+    </section>
+
+    <section>
+      <h2><span class="n">3</span> معلومات التوصيل</h2>
+      <label for="name">الاسم</label>
+      <input id="name" autocomplete="name" placeholder="اسمك الكامل">
+      <p class="err" id="e-name"></p>
+
+      <label for="phone">رقم الهاتف</label>
+      <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XXXXXXXXX" dir="ltr" style="text-align:right">
+      <p class="err" id="e-phone"></p>
+
+      <label for="gov">المحافظة</label>
+      <select id="gov"><option value="">اختار المحافظة</option></select>
+      <p class="err" id="e-gov"></p>
+
+      <label for="addr">العنوان وأقرب نقطة دالة</label>
+      <input id="addr" placeholder="المنطقة، الشارع، قرب…">
+      <p class="err" id="e-addr"></p>
+
+      <label for="note">ملاحظة (اختياري)</label>
+      <textarea id="note" placeholder="أي شي تريد تضيفه"></textarea>
+    </section>
+  </form>
+
+  <footer>
+    الطلب يوصلنا رسالة على الواتساب، ونأكد وياك التوفر والسعر قبل الشحن.<br>
+    أو اتصل: <a href="tel:+9647801273388" dir="ltr">0780 127 3388</a>
+  </footer>
+</div>
+
+<div class="bar">
+  <div class="in">
+    <div class="sum" id="sum">اختار القطعة<b>—</b></div>
+    <button class="send" form="f" type="submit">ثبّت الطلب بالواتساب</button>
+  </div>
+</div>
+
+<script>
+// Edit this list when stock/prices change. Prices in IQD thousands.
+const SHOP_WA = "9647801273388";
+const DELIVERY = 5;
+const BIG = ["L","XL","2XL","3XL","4XL","5XL","6XL","7XL"];
+const STD = ["L","XL","2XL","3XL"];
+const PRODUCTS = [
+  {id:"huko", name:"بولو Huko شتوي", desc:"جاكار قطن 100%", price:22, sizes:BIG, colours:[], note:"من وزن 70 لحد 150 كيلو"},
+  {id:"ff", name:"بولو FF الموسم", desc:"6 ألوان", price:20, sizes:STD, colours:["بيج","رصاصي","أسود","نيلي","سمائي","أوف وايت"]},
+  {id:"jeeb", name:"بولو بجيب", desc:"قطن 100% · القطعتين بـ 35 ألف", price:18, pair:35, sizes:BIG, colours:["أسود","رصاصي فاتح","رصاصي غامق","بيجي","سمائي","زيتوني","فيروزي"], note:"من وزن 75 لحد 150 كيلو"},
+  {id:"jeans", name:"قميص جينز تنسل", desc:"ياخة عظم ودگم خشب", price:20, sizes:STD, colours:["كحلي","بحري","رصاصي","نيلي طوخ"]},
+  {id:"jeans1", name:"قميص تنسل بجيب واحد", desc:"شكل الجينز", price:20, sizes:STD, colours:["نيلي","رصاصي","كحلي","بحري"]},
+  {id:"striped", name:"قميص تنسل مقلّم", desc:"فول ليكرا", price:20, sizes:STD, colours:["بحري","نيلي","رصاصي","أسود كحلي"]},
+  {id:"tencel", name:"قميص تنسل ألوان", desc:"بيه ليكرا", price:20, sizes:STD, colours:["سمائي","أسود","قهوائي","جوزي","نيلي"]},
+  {id:"jacquard", name:"قميص تروكة جاكار شتوي", desc:"يلبس قميص وتروكة", price:25, sizes:STD, colours:["قهوائي","بحري","رصاصي","أزرق","نيلي","أسود كحلي"], note:"من وزن 70 لغاية 105 كيلو"},
+];
+const GOVS = ["النجف","بغداد","كربلاء","بابل","البصرة","ذي قار","الديوانية","واسط","ميسان","المثنى","ديالى","صلاح الدين","كركوك","الأنبار","نينوى","أربيل","السليمانية","دهوك","حلبجة"];
+
+const $ = id => document.getElementById(id);
+const state = {p:null, colour:"", size:"", qty:1, dontKnow:false};
+
+function chip(text, pressed, onClick){
+  const b=document.createElement("button"); b.type="button"; b.className="chip";
+  b.textContent=text; b.setAttribute("aria-pressed", pressed); b.onclick=onClick; return b;
+}
+function renderProducts(){
+  const box=$("products"); box.innerHTML="";
+  PRODUCTS.forEach(p=>{
+    const b=document.createElement("button"); b.type="button"; b.className="prod";
+    b.setAttribute("aria-pressed", state.p===p);
+    b.innerHTML=`<span><span class="t"></span><br><span class="d"></span></span><span class="p"></span>`;
+    b.querySelector(".t").textContent=p.name;
+    b.querySelector(".d").textContent=p.desc;
+    b.querySelector(".p").textContent=p.price+" ألف";
+    b.onclick=()=>{state.p=p; state.colour=""; state.size=""; renderAll(); $("s-opts").scrollIntoView({behavior:"smooth",block:"start"});};
+    box.appendChild(b);
+  });
+}
+function renderOpts(){
+  const p=state.p; $("s-opts").classList.toggle("hidden", !p); if(!p) return;
+  const c=$("colours"); c.innerHTML="";
+  if(p.colours.length){
+    p.colours.forEach(x=>c.appendChild(chip(x, state.colour===x, ()=>{state.colour=x; renderAll();})));
+    c.appendChild(chip("لون ثاني", state.colour==="لون ثاني", ()=>{state.colour="لون ثاني"; renderAll();}));
+  } else {
+    const i=document.createElement("input"); i.id="colourText"; i.placeholder="اكتب اللون اللي عجبك بالإعلان"; i.value=state.colour;
+    i.oninput=()=>{state.colour=i.value.trim(); renderSum();}; c.appendChild(i);
+  }
+  const s=$("sizes"); s.innerHTML="";
+  p.sizes.forEach(x=>s.appendChild(chip(x, state.size===x, ()=>{state.size=x; state.dontKnow=false; renderAll();})));
+  $("wh").classList.toggle("hidden", !state.dontKnow);
+  $("sizehint").textContent=p.note ? "القياسات "+p.sizes[0]+" لحد "+p.sizes[p.sizes.length-1]+" · "+p.note : "";
+  $("offer").textContent=p.pair ? "عرض: القطعتين بـ "+p.pair+" ألف" : "";
+  $("qty").textContent=state.qty;
+}
+function total(){
+  const p=state.p; if(!p) return 0;
+  let t=p.pair ? Math.floor(state.qty/2)*p.pair + (state.qty%2)*p.price : state.qty*p.price;
+  return t+DELIVERY;
+}
+function renderSum(){
+  const p=state.p;
+  $("sum").innerHTML = p ? `${state.qty} × ${p.name}<b>${total()} ألف مع التوصيل</b>` : "اختار القطعة<b>—</b>";
+}
+function renderAll(){renderProducts(); renderOpts(); renderSum();}
+
+$("minus").onclick=()=>{state.qty=Math.max(1,state.qty-1); renderAll();};
+$("plus").onclick=()=>{state.qty=Math.min(20,state.qty+1); renderAll();};
+$("dontknow").onclick=()=>{state.dontKnow=!state.dontKnow; if(state.dontKnow) state.size=""; renderAll();};
+GOVS.forEach(g=>{const o=document.createElement("option"); o.value=o.textContent=g; $("gov").appendChild(o);});
+
+function normPhone(v){
+  v=v.replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[^\d+]/g,"");
+  if(v.startsWith("+964")) v="0"+v.slice(4); else if(v.startsWith("00964")) v="0"+v.slice(5); else if(v.startsWith("964")) v="0"+v.slice(3);
+  return v;
+}
+function setErr(id,msg){$("e-"+id).textContent=msg||""; return !msg;}
+
+$("f").addEventListener("submit", e=>{
+  e.preventDefault();
+  const p=state.p, phone=normPhone($("phone").value), w=$("weight").value.trim(), h=$("height").value.trim();
+  let ok=true;
+  ok&=setErr("product", p?"":"اختار القطعة أولاً");
+  if(p){
+    ok&=setErr("colour", state.colour?"":"اختار اللون");
+    ok&=setErr("size", (state.size || (state.dontKnow && w && h))?"":"اختار القياس، أو اكتب الوزن والطول");
+  }
+  ok&=setErr("name", $("name").value.trim().length>=2?"":"اكتب الاسم");
+  ok&=setErr("phone", /^07\d{9}$/.test(phone)?"":"الرقم لازم يكون 11 رقم ويبدي بـ 07");
+  ok&=setErr("gov", $("gov").value?"":"اختار المحافظة");
+  ok&=setErr("addr", $("addr").value.trim().length>=3?"":"اكتب العنوان");
+  if(!ok){ const first=[...document.querySelectorAll(".err")].find(x=>x.textContent); first&&first.scrollIntoView({behavior:"smooth",block:"center"}); return; }
+
+  const size = state.size || `ما أعرف (الوزن ${w} كيلو، الطول ${h} سم)`;
+  const lines = [
+    "*طلب جديد — من صفحة الطلب*",
+    `القطعة: ${p.name}`,
+    `اللون: ${state.colour}`,
+    `القياس: ${size}`,
+    `العدد: ${state.qty}`,
+    `المجموع التقريبي: ${total()} ألف مع التوصيل`,
+    "",
+    `الاسم: ${$("name").value.trim()}`,
+    `الهاتف: ${phone}`,
+    `المحافظة: ${$("gov").value}`,
+    `العنوان: ${$("addr").value.trim()}`,
+  ];
+  const note=$("note").value.trim(); if(note) lines.push(`ملاحظة: ${note}`);
+  location.href = `https://wa.me/${SHOP_WA}?text=${encodeURIComponent(lines.join("\n"))}`;
+});
+renderAll();
+</script>
+</body>
+</html>
