@@ -94,10 +94,13 @@ window.Shop = (() => {
   }
 
   function openProduct(p) {
-    const sel = {colour: "", size: "", qty: 1};
+    // Pre-pick when there is only one choice, so the customer taps less.
+    const okColours = p.colours.filter(c => c.ok), okSizes = p.sizes.filter(s => s.ok);
+    const sel = {colour: !p.free_colour && okColours.length === 1 ? okColours[0].n : "", size: okSizes.length === 1 ? okSizes[0].n : "", qty: 1};
     const root = $("pSheet");
     const err = el("p", {class: "err", role: "alert"});
-    const addBtn = el("button", {class: "btn btn-gold btn-block btn-lg", type: "button"});
+    const buyBtn = el("button", {class: "btn btn-gold btn-lg", type: "button"});
+    const addBtn = el("button", {class: "btn btn-lg", type: "button"}, "ضيف للسلة");
     const colourBox = el("div", {class: "chips"}), sizeBox = el("div", {class: "chips"});
 
     const unitTotal = () => p.pair_price ? Math.floor(sel.qty / 2) * p.pair_price + (sel.qty % 2) * p.price : sel.qty * p.price;
@@ -105,25 +108,27 @@ window.Shop = (() => {
       colourBox.innerHTML = "";
       if (p.free_colour) {
         const i = el("input", {class: "input", placeholder: "اكتب اللون اللي عجبك", value: sel.colour});
-        i.addEventListener("input", () => { sel.colour = i.value.trim(); });
+        i.addEventListener("input", () => { sel.colour = i.value.trim(); err.textContent = ""; });
         colourBox.append(i);
       } else {
         p.colours.forEach(c => colourBox.append(el("button", {class: "chip", type: "button", disabled: !c.ok, "aria-pressed": String(sel.colour === c.n),
-          onclick: () => { sel.colour = c.n; paint(); }}, c.n, swatch(c.n) ? el("i", {class: "sw", style: "background:" + swatch(c.n)}) : null, c.ok ? null : " — خلص")));
+          onclick: () => { sel.colour = c.n; err.textContent = ""; paint(); }}, c.n, swatch(c.n) ? el("i", {class: "sw", style: "background:" + swatch(c.n)}) : null, c.ok ? null : " — خلص")));
       }
       sizeBox.innerHTML = "";
       p.sizes.concat([{n: UNKNOWN, ok: true}]).forEach(s => sizeBox.append(el("button", {class: "chip", type: "button", disabled: !s.ok,
-        "aria-pressed": String(sel.size === s.n), onclick: () => { sel.size = s.n; paint(); }}, s.n === UNKNOWN ? "ما أعرف قياسي" : s.n)));
-      addBtn.textContent = "ضيف للسلة · " + money(unitTotal());
+        "aria-pressed": String(sel.size === s.n), onclick: () => { sel.size = s.n; err.textContent = ""; paint(); }}, s.n === UNKNOWN ? "ما أعرف قياسي" : s.n)));
+      buyBtn.textContent = "اطلب هسه · " + money(unitTotal());
     };
-    addBtn.onclick = () => {
-      if (!sel.colour) return (err.textContent = p.free_colour ? "اكتب اللون" : "اختار اللون");
-      if (!sel.size) return (err.textContent = "اختار القياس، أو «ما أعرف قياسي»");
-      if (!Cart.add({pid: p.id, name: p.name, colour: sel.colour, size: sel.size, qty: sel.qty})) return (err.textContent = "السلة وصلت الحد، كمّل الطلب وبعدين سوّي طلب ثاني");
-      pSheet.close(); KFT.toast("انضافت للسلة ✓");
+    const take = () => {
+      if (!sel.colour) { err.textContent = p.free_colour ? "اكتب اللون" : "اختار اللون"; colourBox.scrollIntoView({behavior: "smooth", block: "center"}); return false; }
+      if (!sel.size) { err.textContent = "اختار القياس، أو «ما أعرف قياسي»"; sizeBox.scrollIntoView({behavior: "smooth", block: "center"}); return false; }
+      if (!Cart.add({pid: p.id, name: p.name, colour: sel.colour, size: sel.size, qty: sel.qty})) { err.textContent = "السلة وصلت الحد، كمّل الطلب وبعدين سوّي طلب ثاني"; return false; }
+      return true;
     };
+    buyBtn.onclick = () => { if (take()) { pSheet.close(); setTimeout(() => Checkout.open(), 260); } };
+    addBtn.onclick = () => { if (take()) { pSheet.close(); KFT.toast("انضافت للسلة ✓ — كمّل تسوق أو اضغط «إكمال الطلب»"); } };
     root.innerHTML = "";
-    root.append(el("div", {class: "grab"}),
+    root.append(...[el("div", {class: "grab"}),
       p.images && p.images.length ? gallery(p) : null,
       el("h3", {id: "pTitle"}, p.name),
       el("div", {class: "meta"}, el("span", {class: "pricebig"}, money(p.price)), p.old_price ? el("span", {class: "old"}, "  " + money(p.old_price)) : null,
@@ -133,7 +138,7 @@ window.Shop = (() => {
       p.note ? el("p", {class: "hint"}, "القياسات " + p.sizes[0].n + " لحد " + p.sizes[p.sizes.length - 1].n + " · " + p.note) : null,
       el("h4", {}, "العدد"), qtyControl(() => sel.qty, v => { sel.qty = v; paint(); }),
       p.pair_price ? el("p", {class: "offer"}, "🎁 القطعتين بـ " + money(p.pair_price) + " — حتى لو بألوان أو قياسات مختلفة") : null,
-      err, el("div", {style: "height:12px"}), addBtn);
+      err, el("div", {class: "buyrow"}, buyBtn, addBtn)].filter(Boolean));
     paint(); pSheet.open();
   }
 
@@ -161,8 +166,8 @@ window.Shop = (() => {
       el("button", {class: "btn btn-gold btn-block btn-lg", type: "button", onclick: () => {
         if (d.value.trim().length < 3) return (err.textContent = "اكتب شنو القطعة");
         Cart.add({custom: true, name: d.value.trim().slice(0, 120), colour: c.value.trim().slice(0, 40), size: s.value.trim().slice(0, 20), qty});
-        pSheet.close(); KFT.toast("انضافت للسلة ✓");
-      }}, "ضيف للسلة"));
+        pSheet.close(); setTimeout(() => Checkout.open(), 260);
+      }}, "اطلبها هسه"));
     pSheet.open();
   }
 
