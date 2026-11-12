@@ -111,6 +111,33 @@ window.KFT = (() => {
     return {open, close};
   }
 
+  // Full-screen photo viewer above any open sheet. Swipe between photos; tap outside, ✕ or Esc closes.
+  function lightbox(urls, start, alt) {
+    if (!urls || !urls.length) return;
+    const prevFocus = document.activeElement;
+    const strip = el("div", {class: "lb-strip"}, urls.map((u, i) => el("img", {src: u, alt: (alt || "") + (urls.length > 1 ? " — " + (i + 1) : ""), decoding: "async"})));
+    const count = urls.length > 1 ? el("div", {class: "lb-count"}) : null;
+    const x = el("button", {class: "lb-x", type: "button", "aria-label": "سد الصورة"}, "✕");
+    const box = el("div", {class: "lb", role: "dialog", "aria-modal": "true", "aria-label": alt || "صورة"}, ...[strip, x, count].filter(Boolean));
+    const idx = () => Math.round(Math.abs(strip.scrollLeft) / (strip.clientWidth || 1));
+    const paint = () => { if (count) count.textContent = (idx() + 1) + " / " + urls.length; };
+    const key = e => { if (e.key === "Escape") { e.stopImmediatePropagation(); close(); } };
+    function close() {
+      window.removeEventListener("keydown", key, true);
+      box.classList.remove("open"); setTimeout(() => box.remove(), 220);
+      if (prevFocus && prevFocus.focus) prevFocus.focus({preventScroll: true});
+    }
+    box.addEventListener("click", e => { if (e.target.tagName !== "IMG") close(); });
+    strip.addEventListener("scroll", paint, {passive: true});
+    window.addEventListener("keydown", key, true);
+    document.body.append(box);
+    const s = Math.max(0, Math.min(urls.length - 1, start || 0));
+    strip.children[s].scrollIntoView({inline: "center", block: "nearest"});
+    paint();
+    requestAnimationFrame(() => box.classList.add("open"));
+    x.focus({preventScroll: true});
+  }
+
   const GOVS = ["النجف","بغداد","كربلاء","بابل","البصرة","ذي قار","الديوانية","واسط","ميسان","المثنى","ديالى","صلاح الدين","كركوك","الأنبار","نينوى","أربيل","السليمانية","دهوك","حلبجة"];
   // Hover/focus explanations: any element with data-tip gets a styled bubble (see .tip in base.css).
   (function tips() {
@@ -131,5 +158,5 @@ window.KFT = (() => {
     document.addEventListener("pointerdown", hide);
   })();
 
-  return {rpc, money, commas, moneyInput, toInt, digits, swatch, toast, el, store, sheet, GOVS, shrinkImage, uploadImage};
+  return {rpc, money, commas, moneyInput, toInt, digits, swatch, toast, el, store, sheet, lightbox, GOVS, shrinkImage, uploadImage};
 })();

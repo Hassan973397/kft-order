@@ -143,7 +143,11 @@ window.Shop = (() => {
   }
 
   function gallery(p) {
-    const strip = el("div", {class: "gallery"}, p.images.map((u, i) => img(u, p.name + " — صورة " + (i + 1), "gimg")));
+    const strip = el("div", {class: "gallery"}, p.images.map((u, i) => {
+      const g = img(u, p.name + " — صورة " + (i + 1), "gimg");
+      g.addEventListener("click", () => KFT.lightbox(p.images, i, p.name));
+      return g;
+    }));
     const dots = p.images.length > 1 ? el("div", {class: "gdots"}, p.images.map((_, i) => el("i", {class: i ? "" : "on"}))) : null;
     if (dots) strip.addEventListener("scroll", () => {
       const k = Math.round(Math.abs(strip.scrollLeft) / strip.clientWidth);

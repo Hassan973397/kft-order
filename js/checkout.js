@@ -19,9 +19,23 @@ window.Checkout = (() => {
   }
 
   // ---------- pieces that refresh when the basket changes ----------
+  // Small product photo; tapping it opens the photos full screen. No photo → initial letter.
+  function lineThumb(l) {
+    const p = !l.custom && (Shop.state.products || []).find(x => x.id === l.pid);
+    const imgs = p && p.images && p.images.length ? p.images : null;
+    const letter = l.custom ? "؟" : l.name.replace(/^(بولو|قميص)\s+/, "").trim().charAt(0);
+    if (!imgs) return el("span", {class: "lthumb ph", "aria-hidden": "true"}, letter);
+    const im = el("img", {src: imgs[0], alt: "", decoding: "async"});
+    const btn = el("button", {class: "lthumb", type: "button", "aria-label": "شوف صورة " + l.name + " بالكبير",
+      onclick: () => KFT.lightbox(imgs, 0, l.name)}, im);
+    im.addEventListener("load", () => im.classList.add("in"));
+    im.addEventListener("error", () => { im.replaceWith(document.createTextNode(letter)); btn.classList.add("ph"); btn.disabled = true; });
+    return btn;
+  }
   function linesBox() {
     if (!Cart.lines.length) return el("p", {class: "hint"}, "السلة فارغة.");
     return el("div", {}, Cart.lines.map((l, i) => el("div", {class: "line"},
+      lineThumb(l),
       el("div", {}, el("div", {class: "t"}, l.custom ? "قطعة خاصة: " + l.name : l.name),
         el("div", {class: "d"}, l.custom ? [l.colour, l.size].filter(Boolean).join(" · ") || "نأكد وياك التفاصيل"
           : l.colour + " · " + (l.size === Shop.UNKNOWN ? "القياس حسب وزنك وطولك" : l.size))),
