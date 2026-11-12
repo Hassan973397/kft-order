@@ -2,139 +2,59 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>اطلب من قفطان — KFT</title>
-<meta name="description" content="مجمع قفطان — النجف. اختار القطع والألوان والقياسات، والطلب يوصلنا على الواتساب. جملة ومفرد، والتوصيل 5 آلاف لكل المحافظات.">
-<meta name="theme-color" content="#01261f">
-<meta property="og:title" content="اطلب من مجمع قفطان — KFT">
-<meta property="og:description" content="جملة ومفرد — اختار القطع والقياسات، والتوصيل لكل محافظات العراق بـ 5 آلاف">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مجمع قفطان — اطلب أونلاين</title>
+<meta name="description" content="مجمع قفطان KFT — النجف. ملابس رجالية جملة ومفرد، اطلب بسهولة والتوصيل لكل محافظات العراق.">
+<meta name="theme-color" content="#03211b">
+<meta property="og:title" content="مجمع قفطان — اطلب أونلاين">
+<meta property="og:description" content="ملابس رجالية جملة ومفرد — التوصيل لكل محافظات العراق">
 <meta property="og:image" content="https://hassan973397.github.io/kft-order/logo.jpg">
 <link rel="icon" href="logo.jpg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css?v=4">
+<link rel="stylesheet" href="css/shop.css?v=4">
 </head>
 <body>
+<div id="announce"></div>
 <div class="wrap">
-  <header>
-    <img src="logo.jpg" alt="شعار KFT" width="92" height="92">
-    <h1>اطلب من <span>مجمع قفطان</span></h1>
-    <p class="sub">النجف — خان المخضر · جملة ومفرد</p>
-    <div class="badges">
-      <span class="badge">🚚 التوصيل <b>5 آلاف</b> لكل المحافظات</span>
-      <span class="badge">✅ تفحص الطلب گدام المندوب</span>
-      <span class="badge">📦 تگدر تطلب أكثر من قطعة</span>
-    </div>
+  <header class="hero">
+    <img class="logo" src="logo.jpg" alt="شعار مجمع قفطان KFT" width="96" height="96">
+    <h1>مجمع <b>قفطان</b></h1>
+    <p>النجف — خان المخضر · جملة ومفرد</p>
+    <div class="perks" id="perks"></div>
+    <div id="closed" class="closed hidden" role="alert"></div>
   </header>
 
-  <form id="f" novalidate>
-    <section>
-      <h2><span class="n">1</span> اختار القطعة</h2>
-      <div class="products" id="products"></div>
-    </section>
+  <div class="section-title"><h2>اختار قطعتك</h2><span>اضغط على القطعة حتى تختار اللون والقياس</span></div>
+  <div class="grid" id="grid" aria-live="polite">
+    <div class="skeleton sk-card"></div><div class="skeleton sk-card"></div><div class="skeleton sk-card"></div><div class="skeleton sk-card"></div>
+  </div>
+  <div id="loadErr" class="card hidden" style="text-align:center;margin-top:12px">
+    <p style="margin:0 0 10px">ما گدرنا نحمّل القطع هسه.</p>
+    <button class="btn btn-gold" id="retry">جرّب مرة ثانية</button>
+    <a class="btn btn-wa" id="waDirect" href="https://wa.me/9647801273388">اطلب على الواتساب مباشرة</a>
+  </div>
 
-    <section id="s-opts" class="hidden">
-      <h2><span class="n">2</span> <span id="opts-title">اللون والقياس</span></h2>
-
-      <div id="known">
-        <label>اللون</label>
-        <div class="chips" id="colours"></div>
-        <p class="err" id="e-colour"></p>
-
-        <label>القياس</label>
-        <div class="chips" id="sizes"></div>
-        <p class="hint" id="sizehint"></p>
-        <p class="err" id="e-size"></p>
-      </div>
-
-      <div id="custom" class="hidden">
-        <label for="c-desc">شنو القطعة اللي تريدها؟</label>
-        <textarea id="c-desc" placeholder="مثلاً: قمصلة جلد سودة، أو بنطرون كاوبوي… وإذا عندك صورة دزها بالواتساب بعد الطلب"></textarea>
-        <div class="row">
-          <div><label for="c-colour">اللون (اختياري)</label><input id="c-colour"></div>
-          <div><label for="c-size">القياس (اختياري)</label><input id="c-size" placeholder="مثلاً XL"></div>
-        </div>
-        <p class="err" id="e-desc"></p>
-      </div>
-
-      <label for="qty">العدد</label>
-      <div class="qty">
-        <button type="button" id="minus" aria-label="نقص">−</button>
-        <input id="qty" inputmode="numeric" value="1" aria-label="العدد">
-        <button type="button" id="plus" aria-label="زيد">+</button>
-      </div>
-      <p class="hint" id="offer"></p>
-      <p class="err" id="e-qty"></p>
-
-      <button type="button" class="add" id="add">+ ضيف للطلب</button>
-    </section>
-
-    <section>
-      <h2><span class="n">3</span> طلبك</h2>
-      <div class="cart" id="cart"></div>
-      <div id="wholesale" class="notice hidden"></div>
-      <div class="totals" id="totals"></div>
-      <p class="err" id="e-cart"></p>
-    </section>
-
-    <section>
-      <h2><span class="n">4</span> معلومات التوصيل</h2>
-      <label for="name">الاسم</label>
-      <input id="name" autocomplete="name" placeholder="اسمك الكامل">
-      <p class="err" id="e-name"></p>
-
-      <label for="phone">رقم الهاتف</label>
-      <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XXXXXXXXX" dir="ltr" style="text-align:right">
-      <p class="err" id="e-phone"></p>
-
-      <label for="gov">المحافظة</label>
-      <select id="gov"><option value="">اختار المحافظة</option></select>
-      <p class="err" id="e-gov"></p>
-
-      <label for="addr">العنوان وأقرب نقطة دالة</label>
-      <input id="addr" placeholder="المنطقة، الشارع، قرب…">
-      <p class="err" id="e-addr"></p>
-
-      <div id="wh-box">
-        <label>ما تعرف قياسك؟ اكتب وزنك وطولك ونختارلك القياس</label>
-        <div class="row">
-          <div><input id="weight" inputmode="numeric" placeholder="الوزن (كيلو)"></div>
-          <div><input id="height" inputmode="numeric" placeholder="الطول (سم)"></div>
-        </div>
-      </div>
-
-      <label for="note">ملاحظة (اختياري)</label>
-      <textarea id="note" placeholder="أي شي تريد تضيفه"></textarea>
-    </section>
-  </form>
-
-  <section id="done" class="done hidden">
-    <h2 style="justify-content:center">✅ طلبك جاهز</h2>
-    <p>رقم طلبك: <b id="ref"></b></p>
-    <p class="hint">إذا ما انفتح الواتساب، اضغط الزر أو انسخ الطلب ودزه، أو اتصل بينا.</p>
-    <div class="btns">
-      <a class="wa" id="wa-again" href="#">افتح الواتساب ودز الطلب</a>
-      <button type="button" id="copy">انسخ نص الطلب</button>
-      <a id="call" href="tel:+9647801273388">اتصل: 0780 127 3388</a>
-      <button type="button" id="new">طلب جديد</button>
-    </div>
-  </section>
-
-  <footer>
-    الطلب يوصلنا رسالة على الواتساب، ونأكد وياك التوفر والسعر قبل الشحن.<br>
-    أو اتصل: <a href="tel:+9647801273388" dir="ltr">0780 127 3388</a>
+  <footer class="foot">
+    تفحص طلبك گدام المندوب قبل ما تدفع · <a href="tel:+9647801273388" dir="ltr">0780 127 3388</a>
   </footer>
 </div>
 
-<div class="bar" id="bar">
-  <div class="in">
-    <div class="sum" id="sum">ما اكو قطع بالطلب<b>—</b></div>
-    <button class="send" form="f" type="submit">ثبّت الطلب بالواتساب</button>
-  </div>
+<div class="cartbar" id="cartbar" aria-live="polite">
+  <div class="count" id="cbCount">0</div>
+  <div class="info"><span id="cbLabel">سلتك</span><b id="cbTotal">—</b></div>
+  <button class="btn btn-gold" id="cbOpen">إكمال الطلب ←</button>
 </div>
 
-<script src="products.js?v=2"></script>
-<script src="app.js?v=2"></script>
+<section class="sheet psheet hidden" id="pSheet" role="dialog" aria-modal="true" aria-labelledby="pTitle"></section>
+<section class="sheet hidden" id="cSheet" role="dialog" aria-modal="true" aria-label="طلبك"></section>
+
+<script src="js/api.js?v=4"></script>
+<script src="js/cart.js?v=4"></script>
+<script src="js/shop.js?v=4"></script>
+<script src="js/checkout.js?v=4"></script>
 </body>
 </html>

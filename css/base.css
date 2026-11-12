@@ -1,0 +1,84 @@
+/* KFT design tokens + shared components (shop and owner panel). */
+:root{
+  --bg:#03211b; --bg-2:#062d25; --surface:#0a3a2f; --surface-2:#0e4537; --raise:#12503f;
+  --line:#1c5a49; --line-2:#2a6d5a;
+  --gold:#e3b34b; --gold-2:#f6d98f; --gold-ink:#241a04;
+  --ink:#f5f1e6; --ink-2:#c9d8d1; --muted:#8fb0a4;
+  --ok:#2bd57a; --wa:#25d366; --warn:#f2b84b; --err:#ff8f80; --info:#7cc4ff;
+  --r-sm:10px; --r:14px; --r-lg:20px; --r-xl:28px;
+  --shadow:0 10px 30px rgba(0,0,0,.35); --shadow-sm:0 4px 14px rgba(0,0,0,.25);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --font:"Cairo",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.6;-webkit-tap-highlight-color:transparent;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(90% 50% at 50% -10%,#0f5a46 0%,transparent 60%),radial-gradient(60% 40% at 100% 100%,#0a3b30 0%,transparent 70%)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.hidden{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--line-2);background:var(--surface-2);
+  border-radius:var(--r);padding:11px 16px;font-weight:700;font-size:15px;transition:transform .15s var(--ease),background .2s,border-color .2s;text-decoration:none;color:var(--ink)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-gold{background:linear-gradient(180deg,var(--gold-2),var(--gold));color:var(--gold-ink);border-color:transparent;box-shadow:0 6px 18px rgba(227,179,75,.25)}
+.btn-wa{background:var(--wa);color:#04210f;border-color:transparent}
+.btn-ghost{background:transparent;border-color:transparent;color:var(--gold-2)}
+.btn-danger{background:transparent;border-color:#6b2f2a;color:var(--err)}
+.btn-block{width:100%}
+.btn-lg{padding:15px 18px;font-size:17px;border-radius:var(--r-lg)}
+.icon-btn{width:40px;height:40px;display:inline-grid;place-items:center;border-radius:12px;border:1.5px solid var(--line-2);background:var(--surface-2);font-size:18px}
+
+/* form fields */
+.field{display:block;margin:0 0 14px}
+.field>span{display:block;font-size:13.5px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.input,select.input,textarea.input{width:100%;background:var(--bg-2);border:1.5px solid var(--line);border-radius:var(--r);padding:12px 14px;font-size:16px;outline:none;transition:border-color .2s,box-shadow .2s}
+.input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(227,179,75,.12)}
+.input[aria-invalid=true]{border-color:var(--err)}
+textarea.input{min-height:84px;resize:vertical}
+.err{color:var(--err);font-size:13px;margin:6px 2px 0;min-height:0}
+.hint{color:var(--muted);font-size:13px;margin:6px 2px 0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* chips & swatches */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line-2);background:var(--bg-2);border-radius:99px;padding:8px 15px;font-size:14.5px;font-weight:600;transition:all .15s var(--ease)}
+.chip[aria-pressed=true]{border-color:var(--gold);background:rgba(227,179,75,.14);color:var(--gold-2)}
+.chip:disabled{opacity:.38;text-decoration:line-through;cursor:not-allowed}
+.sw{display:inline-block;width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);vertical-align:-3px;margin-inline-start:6px}
+
+/* switch */
+.switch{position:relative;display:inline-flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.switch input{position:absolute;opacity:0;width:1px;height:1px}
+.switch .track{width:46px;height:27px;border-radius:99px;background:#24493f;border:1.5px solid var(--line-2);position:relative;transition:background .2s;flex:none}
+.switch .track::after{content:"";position:absolute;top:2px;inset-inline-start:2px;width:20px;height:20px;border-radius:50%;background:#d7e4de;transition:transform .2s var(--ease)}
+.switch input:checked+.track{background:var(--ok);border-color:var(--ok)}
+.switch input:checked+.track::after{transform:translateX(-19px);background:#fff}
+.switch input:focus-visible+.track{outline:2px solid var(--gold);outline-offset:2px}
+
+/* cards & sheets */
+.card{background:linear-gradient(180deg,var(--surface),var(--bg-2));border:1px solid var(--line);border-radius:var(--r-lg);padding:16px}
+.sheet-backdrop{position:fixed;inset:0;background:rgba(0,10,8,.6);backdrop-filter:blur(3px);z-index:40;opacity:0;transition:opacity .2s}
+.sheet-backdrop.open{opacity:1}
+.sheet{position:fixed;inset:auto 0 0 0;z-index:41;max-height:92vh;overflow:auto;background:var(--bg-2);border-top:1px solid var(--line-2);
+  border-radius:var(--r-xl) var(--r-xl) 0 0;padding:8px 18px calc(18px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .28s var(--ease);box-shadow:0 -10px 40px rgba(0,0,0,.45)}
+.sheet.open{transform:none}
+.sheet .grab{width:44px;height:5px;border-radius:9px;background:var(--line-2);margin:4px auto 12px}
+.sheet h3{margin:0 0 4px;font-size:20px}
+@media (min-width:720px){.sheet{inset:auto 0 0 0;max-width:560px;margin:0 auto;border-radius:var(--r-xl) var(--r-xl) 0 0}}
+
+/* toast */
+.toast{position:fixed;inset-inline:16px;bottom:96px;z-index:60;margin:0 auto;max-width:420px;background:#0f2f27;border:1px solid var(--line-2);color:var(--ink);
+  padding:12px 16px;border-radius:var(--r);box-shadow:var(--shadow);font-weight:600;text-align:center;transform:translateY(20px);opacity:0;transition:all .25s var(--ease);pointer-events:none}
+.toast.show{transform:none;opacity:1}
+.toast.bad{border-color:#7a3a33;color:#ffd6cf}
+
+.skeleton{background:linear-gradient(90deg,var(--surface) 0%,var(--raise) 50%,var(--surface) 100%);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:var(--r-lg)}
+@keyframes sk{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
