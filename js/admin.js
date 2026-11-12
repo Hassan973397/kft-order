@@ -61,6 +61,7 @@ window.Admin = (() => {
     btn.disabled = true; btn.textContent = "لحظة…"; $("lerr").textContent = "";
     try {
       const s = await KFT.rpc("kft_admin_login", {p_username: u, p_password: p});
+      if (s.error) { $("lerr").textContent = s.error; return; }
       state.token = s.token; KFT.store.set(SESSION, s); $("lp").value = "";
       await start();
     } catch (err) { $("lerr").textContent = err.message; }

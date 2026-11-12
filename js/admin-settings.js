@@ -76,7 +76,11 @@
       el("label", {class: "field"}, el("span", {}, "كلمة السر الجديدة (8 أحرف أو أكثر)"), n), msg,
       el("button", {class: "btn btn-block", type: "button", onclick: async () => {
         msg.textContent = "";
-        try { await Admin.call("kft_admin_change_password", {p_old: o.value, p_new: n.value}); o.value = n.value = ""; KFT.toast("تغيّرت كلمة السر ✓"); }
+        try {
+          const r = await Admin.call("kft_admin_change_password", {p_old: o.value, p_new: n.value});
+          if (r && r.error) { msg.textContent = r.error; return; }
+          o.value = n.value = ""; KFT.toast("تغيّرت كلمة السر ✓");
+        }
         catch (e) { msg.textContent = e.message; } }}, "تغيير كلمة السر"));
   }
 
