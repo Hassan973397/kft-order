@@ -67,7 +67,7 @@ textarea.input{min-height:84px;resize:vertical}
 .sheet-backdrop{position:fixed;inset:0;background:rgba(0,10,8,.6);backdrop-filter:blur(3px);z-index:40;opacity:0;transition:opacity .2s}
 .sheet-backdrop.open{opacity:1}
 .sheet{position:fixed;inset:auto 0 0 0;z-index:41;max-height:92vh;overflow:auto;background:var(--bg-2);border-top:1px solid var(--line-2);
-  border-radius:var(--r-xl) var(--r-xl) 0 0;padding:8px 18px calc(18px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .28s var(--ease);box-shadow:0 -10px 40px rgba(0,0,0,.45)}
+  border-radius:var(--r-xl) var(--r-xl) 0 0;padding:8px 18px calc(18px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .38s cubic-bezier(.16,1,.3,1);box-shadow:0 -10px 40px rgba(0,0,0,.45)}
 .sheet.open{transform:none}
 .sheet .grab{width:44px;height:5px;border-radius:9px;background:var(--line-2);margin:4px auto 12px}
 .sheet h3{margin:0 0 4px;font-size:20px}
@@ -82,3 +82,15 @@ textarea.input{min-height:84px;resize:vertical}
 .skeleton{background:linear-gradient(90deg,var(--surface) 0%,var(--raise) 50%,var(--surface) 100%);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:var(--r-lg)}
 @keyframes sk{to{background-position:-200% 0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* hover explanations */
+.tip{position:fixed;z-index:80;max-width:280px;background:#f6efd9;color:#1d1606;font-size:13px;font-weight:600;line-height:1.5;
+  padding:8px 11px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.45);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
+.tip.show{opacity:1;transform:none}
+[data-tip]{cursor:help}
+button[data-tip],a[data-tip],label[data-tip],input[data-tip],select[data-tip]{cursor:pointer}
+input[data-tip]{cursor:text}
+.input.money{text-align:right;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.help{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line-2);color:var(--gold-2);font-size:11px;font-weight:900;margin-inline-start:6px;vertical-align:1px}
+.sheet,.gallery{scrollbar-width:thin;scrollbar-color:var(--line-2) transparent}
+.sheet::-webkit-scrollbar{width:6px}.sheet::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:9px}.sheet::-webkit-scrollbar-track{background:transparent}

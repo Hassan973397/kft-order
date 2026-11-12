@@ -10,9 +10,9 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=5">
-<link rel="stylesheet" href="css/admin.css?v=5">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css?v=6">
+<link rel="stylesheet" href="css/admin.css?v=6">
 </head>
 <body>
 <main id="login" class="login hidden">
@@ -34,13 +34,13 @@
     <div class="row">
       <img src="logo.jpg" alt="" width="38" height="38">
       <div class="title"><b>لوحة المالك</b><small id="who"></small></div>
-      <a class="btn btn-ghost" href="./" target="_blank" rel="noopener">صفحة الزبون ↗</a>
-      <button class="icon-btn" id="logout" title="خروج" aria-label="خروج">⎋</button>
+      <a class="btn btn-ghost" href="./" target="_blank" rel="noopener" data-tip="يفتح الصفحة مثل ما يشوفها الزبون">صفحة الزبون ↗</a>
+      <button class="icon-btn" id="logout" aria-label="خروج" data-tip="تسجيل خروج من اللوحة">⎋</button>
     </div>
     <nav class="tabs" role="tablist">
-      <button role="tab" data-tab="orders" aria-selected="true">الطلبات<span class="badge hidden" id="newBadge"></span></button>
-      <button role="tab" data-tab="products" aria-selected="false">المنتجات</button>
-      <button role="tab" data-tab="settings" aria-selected="false">الإعدادات</button>
+      <button role="tab" data-tab="orders" aria-selected="true" data-tip="كل الطلبات اللي وصلت وحالتها">الطلبات<span class="badge hidden" id="newBadge"></span></button>
+      <button role="tab" data-tab="products" aria-selected="false" data-tip="القطع وأسعارها وصورها، وشنو متوفر وشنو خلص">المنتجات</button>
+      <button role="tab" data-tab="settings" aria-selected="false" data-tip="التوصيل والخصم وإيقاف الطلبات والواتساب وكلمة السر">الإعدادات</button>
     </nav>
   </header>
 
@@ -52,10 +52,10 @@
 
 <section class="sheet editor hidden" id="eSheet" role="dialog" aria-modal="true" aria-label="تعديل منتج"></section>
 
-<script src="js/api.js?v=5"></script>
-<script src="js/admin.js?v=5"></script>
-<script src="js/admin-orders.js?v=5"></script>
-<script src="js/admin-products.js?v=5"></script>
-<script src="js/admin-settings.js?v=5"></script>
+<script src="js/api.js?v=6"></script>
+<script src="js/admin.js?v=6"></script>
+<script src="js/admin-orders.js?v=6"></script>
+<script src="js/admin-products.js?v=6"></script>
+<script src="js/admin-settings.js?v=6"></script>
 </body>
 </html>

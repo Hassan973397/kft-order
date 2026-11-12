@@ -6,6 +6,7 @@
   const NEXT = {new: ["confirmed", "cancelled"], confirmed: ["shipped", "cancelled"], shipped: ["delivered", "returned"],
                 delivered: ["returned"], returned: ["new"], cancelled: ["new"]};
   const LABEL = {confirmed: "✓ ثبّت", shipped: "🚚 انشحن", delivered: "📦 وصل", returned: "↩ راجع", cancelled: "✕ إلغاء", new: "↺ رجّعه جديد"};
+  const TIP = {"confirmed": "اتصلت أو راسلت الزبون وتأكد الطلب", "shipped": "سلّمت الطلب لشركة التوصيل", "delivered": "الزبون استلم ودفع", "returned": "الزبون رجّع الطلب", "cancelled": "الطلب ما راح يكمل", "new": "رجّع الطلب لقائمة الجديد"};
   const st = {status: "", q: "", list: [], more: false, loading: false, built: false};
   let listEl, moreBtn, searchT;
 
@@ -51,6 +52,13 @@
     card.append(box); ta.focus();
   }
 
+  async function copyOrder(o) {
+    const t = [o.ref, o.customer_name + " — " + o.phone, o.governorate + " — " + o.address,
+      ...o.items.map(it => "• " + (it.custom ? "خاصة: " : "") + it.name + " " + [it.colour, it.size].filter(Boolean).join(" ") + " × " + it.qty),
+      "المجموع: " + money(o.total) + (o.delivery ? " (ويا التوصيل)" : "")].join("\n");
+    try { await navigator.clipboard.writeText(t); KFT.toast("انتسخ الطلب ✓"); } catch (e) { KFT.toast("ما گدرنا ننسخ", true); }
+  }
+
   function card(o) {
     const c = el("article", {class: "order" + (o.status === "new" ? " new" : "")});
     const items = el("ul", {}, o.items.map(it => el("li", {}, (it.custom ? "خاصة: " + it.name : it.name) + " — " +
@@ -68,10 +76,11 @@
         o.discount > 0 ? el("span", {class: "pill st-delivered"}, "خصم " + money(o.discount)) : null),
       el("div", {class: "money"}, el("span", {}, o.pieces + " قطعة · توصيل " + (o.delivery ? money(o.delivery) : "مجاني")), el("span", {}, money(o.total))),
       el("div", {class: "acts"},
-        NEXT[o.status].map(s => el("button", {class: "btn" + (s === "cancelled" || s === "returned" ? " btn-danger" : s === "new" ? "" : " btn-gold"), type: "button",
+        NEXT[o.status].map(s => el("button", {class: "btn" + (s === "cancelled" || s === "returned" ? " btn-danger" : s === "new" ? "" : " btn-gold"), type: "button", "data-tip": TIP[s],
           onclick: () => setStatus(o, s, c)}, LABEL[s])),
-        el("a", {class: "btn btn-wa", href: waCustomer(o), target: "_blank", rel: "noopener"}, "واتساب"),
-        el("button", {class: "btn btn-ghost", type: "button", onclick: () => editNote(o, c)}, "📝 ملاحظة"))].filter(Boolean));
+        el("a", {class: "btn btn-wa", href: waCustomer(o), target: "_blank", rel: "noopener", "data-tip": "يفتح محادثة واتساب ويا الزبون، والرسالة تبدي برقم طلبه"}, "واتساب"),
+        el("button", {class: "btn btn-ghost", type: "button", "data-tip": "ينسخ تفاصيل الطلب حتى تلصقها لشركة التوصيل أو الفريق", onclick: () => copyOrder(o)}, "⧉ نسخ"),
+        el("button", {class: "btn btn-ghost", type: "button", "data-tip": "ملاحظة داخلية للفريق، الزبون ما يشوفها", onclick: () => editNote(o, c)}, "📝 ملاحظة"))].filter(Boolean));
     return c;
   }
 
@@ -85,13 +94,13 @@
   }
 
   function build() {
-    const search = el("input", {class: "input", type: "search", placeholder: "ابحث برقم الطلب أو الهاتف أو الاسم"});
+    const search = el("input", {class: "input", type: "search", placeholder: "ابحث برقم الطلب أو الهاتف أو الاسم", "data-tip": "اكتب رقم الطلب (مثل KFT-1112) أو رقم الزبون أو اسمه"});
     search.addEventListener("input", () => { clearTimeout(searchT); searchT = setTimeout(() => { st.q = search.value.trim(); fetchList(false); }, 350); });
     const filters = el("div", {class: "filters"}, [["", "الكل"], ...Object.entries(STATUS)].map(([s, l]) =>
       el("button", {class: "chip", type: "button", "data-s": s, onclick: () => { st.status = s; fetchList(false); }}, l)));
     listEl = el("div", {class: "orders"});
     moreBtn = el("button", {class: "btn btn-block hidden", type: "button", style: "margin-top:12px", onclick: () => fetchList(true)}, "عرض طلبات أقدم");
-    root.append(el("div", {class: "toolbar"}, search, el("button", {class: "btn", type: "button", onclick: () => fetchList(false)}, "↻ تحديث")), filters, listEl, moreBtn);
+    root.append(el("div", {class: "toolbar"}, search, el("button", {class: "btn", type: "button", "data-tip": "يجيب آخر الطلبات هسه (تتحدث وحدها كل دقيقة تقريباً)", onclick: () => fetchList(false)}, "↻ تحديث")), filters, listEl, moreBtn);
     st.built = true;
   }
 

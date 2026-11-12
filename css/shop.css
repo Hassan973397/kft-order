@@ -81,3 +81,30 @@
 footer.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:36px}
 footer.foot a{color:var(--gold-2);text-decoration:none}
 @media (max-width:360px){.grid{grid-template-columns:1fr}.pcard{padding:14px}}
+
+/* photos */
+.thumb{flex:none;width:86px;height:108px;object-fit:cover;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);opacity:0;transition:opacity .35s ease}
+.thumb.in,.gimg.in{opacity:1}
+.gwrap{position:relative;margin:0 -18px 14px}
+.gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;scrollbar-width:none;border-radius:0}
+.gallery::-webkit-scrollbar{display:none}
+.gimg{flex:0 0 100%;width:100%;aspect-ratio:4/5;max-height:56vh;object-fit:cover;scroll-snap-align:center;background:var(--surface);opacity:0;transition:opacity .35s ease}
+.gdots{position:absolute;bottom:10px;inset-inline:0;display:flex;justify-content:center;gap:6px}
+.gdots i{width:7px;height:7px;border-radius:9px;background:rgba(255,255,255,.45);transition:all .25s var(--ease)}
+.gdots i.on{width:20px;background:var(--gold)}
+
+/* motion: quick, light, GPU-only (transform/opacity) */
+.pcard{animation:rise .5s var(--ease) both;animation-delay:var(--d,0ms)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero .logo{animation:pop .6s var(--ease) both}
+.hero h1,.hero p,.perks{animation:rise .55s var(--ease) both}
+.hero p{animation-delay:60ms}.perks{animation-delay:120ms}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+.plus{transition:transform .2s var(--ease)}
+.pcard:hover .plus{transform:rotate(90deg)}
+.cartbar .count.bump{animation:bump .45s var(--ease)}
+@keyframes bump{30%{transform:scale(1.25)}60%{transform:scale(.95)}}
+.chip{transition:transform .12s var(--ease),background .2s,border-color .2s,color .2s}
+.chip:active{transform:scale(.94)}
+.line{animation:rise .35s var(--ease) both}
+.success .check{animation:pop .5s var(--ease) both}

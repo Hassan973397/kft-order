@@ -10,7 +10,9 @@
   function renderBar() {
     const n = Cart.pieces(), q = Cart.quote;
     $("cartbar").classList.toggle("show", n > 0);
-    $("cbCount").textContent = n;
+    const cnt = $("cbCount");
+    if (n > (+cnt.textContent || 0)) { cnt.classList.remove("bump"); void cnt.offsetWidth; cnt.classList.add("bump"); }
+    cnt.textContent = n;
     $("cbLabel").textContent = n === 1 ? "قطعة وحدة بسلتك" : n + " قطع بسلتك";
     $("cbTotal").textContent = Cart.loading ? "…" : q ? money(q.total) + " مع التوصيل" : Cart.error ? "راجع السلة" : "—";
   }

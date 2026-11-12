@@ -27,8 +27,9 @@ window.Admin = (() => {
 
   function renderStats() {
     const s = state.data.stats, box = $("stats"); box.innerHTML = "";
-    const stat = (label, value, hot) => el("div", {class: "stat" + (hot ? " hot" : "")}, el("small", {}, label), el("b", {}, value));
-    box.append(stat("طلبات جديدة", s.new, s.new > 0), stat("طلبات اليوم", s.today), stat("مبيعات اليوم", money(s.today_total)), stat("قطع اليوم", s.today_pieces));
+    const stat = (label, value, tip, hot) => el("div", {class: "stat" + (hot ? " hot" : ""), "data-tip": tip}, el("small", {}, label), el("b", {}, value));
+    box.append(stat("طلبات جديدة", s.new, "طلبات ما انثبتت بعد. ثبّتها أو لغيها", s.new > 0), stat("طلبات اليوم", s.today, "كل طلبات اليوم عدا الملغية"),
+      stat("مبيعات اليوم", money(s.today_total), "مجموع طلبات اليوم ويا التوصيل، عدا الملغية"), stat("قطع اليوم", s.today_pieces, "عدد القطع المطلوبة اليوم"));
     const b = $("newBadge"); b.textContent = s.new; b.classList.toggle("hidden", !s.new);
   }
 

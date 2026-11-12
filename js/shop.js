@@ -51,7 +51,8 @@ window.Shop = (() => {
     else if (p.free_colour) dots.append(el("small", {}, "ألوان متعددة"));
     return el("button", {class: "pcard", type: "button", disabled: out || !state.settings.shop_open, onclick: () => openProduct(p),
         "aria-label": p.name + " — " + money(p.price)},
-      el("span", {class: "mono", "aria-hidden": "true"}, p.name.replace(/^(بولو|قميص)\s+/, "").trim().charAt(0)),
+      p.images && p.images.length ? img(p.images[0], p.name, "thumb")
+        : el("span", {class: "mono", "aria-hidden": "true"}, p.name.replace(/^(بولو|قميص)\s+/, "").trim().charAt(0)),
       el("span", {class: "pbody"},
         el("div", {class: "pname"}, p.name),
         p.description ? el("div", {class: "pdesc"}, p.description) : null,
@@ -65,9 +66,17 @@ window.Shop = (() => {
       out ? null : el("span", {class: "plus", "aria-hidden": "true"}, "+"));
   }
 
+  // Lazy image that fades in once decoded.
+  function img(src, alt, cls) {
+    const i = el("img", {class: cls, src, alt, loading: "lazy", decoding: "async"});
+    i.addEventListener("load", () => i.classList.add("in"));
+    i.addEventListener("error", () => i.remove());
+    return i;
+  }
+
   function renderGrid() {
     const g = $("grid"); g.innerHTML = "";
-    state.products.forEach(p => g.append(card(p)));
+    state.products.forEach((p, i) => { const c = card(p); c.style.setProperty("--d", Math.min(i, 10) * 45 + "ms"); g.append(c); });
     g.append(el("button", {class: "pcard custom", type: "button", disabled: !state.settings.shop_open, onclick: openCustom},
       el("span", {class: "mono", "aria-hidden": "true"}, "؟"),
       el("span", {class: "pbody"}, el("div", {class: "pname"}, "قطعة مو موجودة بالقائمة؟"),
@@ -115,6 +124,7 @@ window.Shop = (() => {
     };
     root.innerHTML = "";
     root.append(el("div", {class: "grab"}),
+      p.images && p.images.length ? gallery(p) : null,
       el("h3", {id: "pTitle"}, p.name),
       el("div", {class: "meta"}, el("span", {class: "pricebig"}, money(p.price)), p.old_price ? el("span", {class: "old"}, "  " + money(p.old_price)) : null,
         p.description ? el("div", {}, p.description) : null),
@@ -125,6 +135,16 @@ window.Shop = (() => {
       p.pair_price ? el("p", {class: "offer"}, "🎁 القطعتين بـ " + money(p.pair_price) + " — حتى لو بألوان أو قياسات مختلفة") : null,
       err, el("div", {style: "height:12px"}), addBtn);
     paint(); pSheet.open();
+  }
+
+  function gallery(p) {
+    const strip = el("div", {class: "gallery"}, p.images.map((u, i) => img(u, p.name + " — صورة " + (i + 1), "gimg")));
+    const dots = p.images.length > 1 ? el("div", {class: "gdots"}, p.images.map((_, i) => el("i", {class: i ? "" : "on"}))) : null;
+    if (dots) strip.addEventListener("scroll", () => {
+      const k = Math.round(Math.abs(strip.scrollLeft) / strip.clientWidth);
+      [...dots.children].forEach((d, i) => d.classList.toggle("on", i === k));
+    }, {passive: true});
+    return el("div", {class: "gwrap"}, strip, dots);
   }
 
   function openCustom() {
